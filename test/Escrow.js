@@ -8,16 +8,15 @@ const tokens = (n) => {
 
 describe('Escrow', () => {
   let buyer, seller, lender, inspector;
-  let realEstate;
-  let escrow;
+  let realEstate, escrow;
 
-  it('Deploys the contracts, saves the addresses', async () => {
+  beforeEach(async () => {
+    // Get ether accounts for testing
     [buyer, seller, lender, inspector] = await ethers.getSigners();
 
     // Deploy Real Estate Contract
     const rsFactory = await ethers.getContractFactory('RealEstate');
     realEstate = await rsFactory.deploy();
-    console.log(realEstate.target);
 
     // Mint
     let transaction = await realEstate
@@ -35,11 +34,27 @@ describe('Escrow', () => {
       lender.address,
       inspector.address
     );
-    console.log(escrow.target);
+  });
 
-    const result = await escrow.nftAddress();
-    console.log(result);
+  describe('Deployment expectations', () => {
+    it('Returns NFT Address', async () => {
+      const result = await escrow.nftAddress();
+      expect(result).to.be.equal(realEstate.target);
+    });
 
-    expect(result).to.be.equal(realEstate.target);
+    it('Returns seller', async () => {
+      const result = await escrow.seller();
+      expect(result).to.be.equal(seller.address);
+    });
+
+    it('Returns lender', async () => {
+        const result = await escrow.lender();
+        expect(result).to.be.equal(lender.address);
+    });
+
+    it('Returns inspector', async () => {
+        const result = await escrow.inspector();
+        expect(result).to.be.equal(inspector.address);
+    });
   });
 });
