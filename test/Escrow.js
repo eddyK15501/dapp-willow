@@ -18,14 +18,6 @@ describe('Escrow', () => {
     const rsFactory = await ethers.getContractFactory('RealEstate');
     realEstate = await rsFactory.deploy();
 
-    // Mint
-    let transaction = await realEstate
-      .connect(seller)
-      .mint(
-        'https://ipfs.io/ipfs/QmdGJNJwL9aN1E25iAc8L2aR33SFQ8e2qDrnc7V26WJm2d?filename=1.json'
-      );
-    await transaction.wait();
-
     // Deploy Escrow Contract
     const escrowFactory = await ethers.getContractFactory('Escrow');
     escrow = await escrowFactory.deploy(
@@ -34,6 +26,14 @@ describe('Escrow', () => {
       lender.address,
       inspector.address
     );
+
+    // Mint
+    let transaction = await realEstate
+      .connect(seller)
+      .mint(
+        'https://ipfs.io/ipfs/QmdGJNJwL9aN1E25iAc8L2aR33SFQ8e2qDrnc7V26WJm2d?filename=1.json'
+      );
+    await transaction.wait();
 
     // Approve property
     transaction = await realEstate.connect(seller).approve(escrow.target, 1);
@@ -71,5 +71,8 @@ describe('Escrow', () => {
         expect(await realEstate.ownerOf(1)).to.be.equal(escrow.target);
     });
 
+    it('Listed NFT property is updated and marked as true', async () => {
+        expect(await escrow.isListed(1)).to.be.equal(true);
+    });
   })
 });
