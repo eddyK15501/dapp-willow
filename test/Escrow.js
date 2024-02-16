@@ -9,11 +9,14 @@ const tokens = (n) => {
 describe('Escrow', () => {});
 
 describe('Real Estate', () => {
-    it('Sample test. Deploy RealEstate.sol smart contract. Saves the addresses', async () => {
+    it('Deploy RealEstate.sol. Saves the addresses', async () => {
+        // Deploy Real Estate Contract
         [owner] = await ethers.getSigners();
-        const realEstate = await ethers.getContractFactory('RealEstate');
-        const rsDeployed = await realEstate.deploy(owner);
+        const rsFactory = await ethers.getContractFactory('RealEstate');
+        const realEstate = await rsFactory.deploy(owner);
+        console.log(realEstate.target);
 
-        console.log(rsDeployed.target);
+        // Mint
+        let transaction = await realEstate.safeMint() 
     })
 });
