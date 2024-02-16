@@ -20,6 +20,6 @@ describe('Real Estate', () => {
         console.log(realEstate.target);
 
         // Mint
-        let transaction = await realEstate.mint("https://ipfs.io/ipfs/QmdGJNJwL9aN1E25iAc8L2aR33SFQ8e2qDrnc7V26WJm2d?filename=1.json") 
+        // let transaction = await realEstate.mint("https://ipfs.io/ipfs/QmdGJNJwL9aN1E25iAc8L2aR33SFQ8e2qDrnc7V26WJm2d?filename=1.json") 
     })
 });

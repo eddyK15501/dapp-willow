@@ -8,9 +8,7 @@ import "hardhat/console.sol";
 
 contract RealEstate is ERC721URIStorage {
     uint256 private _tokenId;
-    constructor(address initialOwner) 
-        ERC721("Real Estate", "REAL") 
-    {}
+    constructor() ERC721("Real Estate", "REAL") {}
 
     function mint(string memory tokenURI) public returns(uint256) {
         _tokenId++;
