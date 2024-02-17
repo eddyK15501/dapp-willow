@@ -3,7 +3,7 @@ const { ethers } = require('hardhat');
 
 // Convert into equivalent value in wei
 const tokens = (n) => {
-  return ethers.utils.parseUnits(n.toString(), 'ether');
+  return ethers.parseUnits(n.toString(), 'ether');
 };
 
 describe('Escrow', () => {
@@ -40,7 +40,7 @@ describe('Escrow', () => {
     await transaction.wait();
 
     // List property
-    transaction = await escrow.connect(seller).list(1);
+    transaction = await escrow.connect(seller).list(1, tokens(10), tokens(5), buyer.address);
     await transaction.wait();
   });
 
@@ -73,6 +73,21 @@ describe('Escrow', () => {
 
     it('Listed NFT property is updated and marked as true', async () => {
         expect(await escrow.isListed(1)).to.be.equal(true);
+    });
+
+    it('Returns purchase price', async () => {
+      const result = await escrow.purchasePrice(1);
+      expect(result).to.be.equal(tokens(10));
+    });
+
+    it('Returns escrow amount', async () => {
+      const result = await escrow.escrowAmount(1);
+      expect(result).to.be.equal(tokens(5));
+    });
+
+    it('Returns buyer address', async () => {
+      const result = await escrow.buyer(1);
+      expect(result).to.be.equal(buyer.address);
     });
   })
 });
