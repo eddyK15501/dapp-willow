@@ -44,7 +44,7 @@ describe('Escrow', () => {
     await transaction.wait();
   });
 
-  describe('Deployment expectations', () => {
+  describe('Deployment', () => {
     it('Returns NFT Address', async () => {
       const result = await escrow.nftAddress();
       expect(result).to.be.equal(realEstate.target);
@@ -89,5 +89,15 @@ describe('Escrow', () => {
       const result = await escrow.buyer(1);
       expect(result).to.be.equal(buyer.address);
     });
-  })
+  });
+
+  describe('Deposits', () => {
+    it('Updates contract balance', async () => {
+      const transaction = await escrow.connect(buyer).depositDownpay(1, { value: tokens(5) });
+      await transaction.wait();
+
+      const contractBalance = await ethers.provider.getBalance(escrow.target);
+      expect(contractBalance).to.be.equal(tokens(5));
+    });
+  });
 });
