@@ -1,4 +1,4 @@
-# Willow
+# Willow DApp
 
 ## Description
 Decentralized Real Estate Application. Smart contracts written in Solidity. Ethers.js used for EVM communication. Frontend built with React.js. Testing, compilation, and deployment done with Hardhat.
