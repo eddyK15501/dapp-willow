@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+import "hardhat/console.sol";
+
 interface IERC721 {
     function transferFrom(
         address _from, 
@@ -59,5 +61,9 @@ contract Escrow {
 
     function depositDownpay(uint256 _nftId) public payable onlyBuyer(_nftId) {
         require(msg.value >= escrowAmount[_nftId]);
+    }
+
+    function getBalance() public view returns(uint256) {
+        return address(this).balance;
     }
 }
