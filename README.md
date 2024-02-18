@@ -1,13 +1,6 @@
-# Sample Hardhat Project
+# Willow
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+## Description
+Decentralized Real Estate Application. Smart contracts written in Solidity. Ethers.js used for EVM communication. Frontend built with React.js. Testing, compilation, and deployment done with Hardhat.
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+<img src="https://i.ibb.co/gwSRhPV/Screenshot-2024-02-17-at-7-31-59-PM.png" />
