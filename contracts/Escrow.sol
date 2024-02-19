@@ -39,6 +39,11 @@ contract Escrow {
         _;
     }
 
+    modifier onlyListed(uint256 _nftId) {
+        require(isListed[_nftId] = true, "Property is not listed for sale.");
+        _;
+    }
+
     address public nftAddress;
     address payable public seller;
     address public lender;
@@ -78,28 +83,37 @@ contract Escrow {
         buyer[_nftId] = _buyer;
     }
 
-    function depositDownpay(uint256 _nftId) public payable onlyBuyer(_nftId) {
+    function depositDownpay(
+        uint256 _nftId
+    ) public payable onlyBuyer(_nftId) onlyListed(_nftId) {
         require(msg.value >= escrowAmount[_nftId]);
     }
 
     function updateInspectionStatus(
         uint256 _nftId,
         bool _passed
-    ) public onlyInspector {
+    ) public onlyInspector onlyListed(_nftId) {
         inspectionPassed[_nftId] = _passed;
     }
 
-    function approveSale(uint256 _nftId) public onlyApprovers(_nftId) {
+    function approveSale(
+        uint256 _nftId
+    ) public onlyApprovers(_nftId) onlyListed(_nftId) {
         approval[_nftId][msg.sender] = true;
     }
 
     function finalizeSale(uint256 _nftId) public onlySeller {
         require(escrowAmount[_nftId] > 0, "Down payment is missing.");
-        require(inspectionPassed[_nftId], "Inspection must be passed.");
+        require(inspectionPassed[_nftId] == true, "Inspection must be passed.");
         require(approval[_nftId][buyer[_nftId]], "Buyer must approve sale.");
         require(approval[_nftId][seller], "Seller must approve sale.");
         require(approval[_nftId][lender], "Lender must approve sale.");
-        require(address(this).balance >= purchasePrice[_nftId], "Full payment from lender is required.");
+        require(
+            address(this).balance >= purchasePrice[_nftId],
+            "Full payment from lender is required."
+        );
+
+        isListed[_nftId] = false;
 
         (bool success, ) = seller.call{value: address(this).balance}("");
         require(success);
