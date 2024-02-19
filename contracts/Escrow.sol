@@ -8,18 +8,6 @@ interface IERC721 {
 }
 
 contract Escrow {
-    address public nftAddress;
-    address payable public seller;
-    address public lender;
-    address public inspector;
-
-    mapping(uint256 => bool) public isListed;
-    mapping(uint256 => uint256) public purchasePrice;
-    mapping(uint256 => uint256) public escrowAmount;
-    mapping(uint256 => address) public buyer;
-    mapping(uint256 => bool) public inspectionPassed;
-    mapping(uint256 => mapping(address => bool)) public approval;
-
     modifier onlySeller() {
         require(msg.sender == seller, "Only the seller can call this method.");
         _;
@@ -50,6 +38,18 @@ contract Escrow {
         );
         _;
     }
+
+    address public nftAddress;
+    address payable public seller;
+    address public lender;
+    address public inspector;
+
+    mapping(uint256 => bool) public isListed;
+    mapping(uint256 => uint256) public purchasePrice;
+    mapping(uint256 => uint256) public escrowAmount;
+    mapping(uint256 => address) public buyer;
+    mapping(uint256 => bool) public inspectionPassed;
+    mapping(uint256 => mapping(address => bool)) public approval;
 
     constructor(
         address _nftAddress,
@@ -103,6 +103,8 @@ contract Escrow {
 
         (bool success, ) = seller.call{value: address(this).balance}("");
         require(success);
+
+        IERC721(nftAddress).transferFrom(address(this), buyer[_nftId], _nftId);
     }
 
     function getBalance() public view returns (uint256) {

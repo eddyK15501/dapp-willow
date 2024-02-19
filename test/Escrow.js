@@ -161,5 +161,9 @@ describe('Escrow', () => {
     it('Updates contract balance', async () => {
       expect(await escrow.getBalance()).to.be.equal(0);
     });
+
+    it('Updates ownership of property NFT', async () => {
+      expect(await realEstate.ownerOf(1)).to.be.equal(buyer.address);
+    });
   });
 });
