@@ -95,10 +95,18 @@ describe('Escrow', () => {
     it('Updates contract balance', async () => {
       const transaction = await escrow.connect(buyer).depositDownpay(1, { value: tokens(5) });
       await transaction.wait();
+      // Get balance with ethers.js provider
+      const contractBalance = await ethers.provider.getBalance(escrow.target);
+      expect(contractBalance).to.be.equal(tokens(5));
+    });
+  });
 
-      // const contractBalance = await ethers.provider.getBalance(escrow.target);
-      // expect(contractBalance).to.be.equal(tokens(5));
-      const result = await escrow.getBalance();
+  describe('Inspection', () => {
+    it('Updates contract balance', async () => {
+      const transaction = await escrow.connect(inspector).updateInspectionStatus(1, true);
+      await transaction.wait();
+      const result = await escrow.inspectionPassed(1);
+      expect(result).to.be.equal(true);
     });
   });
 });
