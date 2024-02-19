@@ -21,14 +21,14 @@ contract Escrow {
     mapping(uint256 => mapping(address => bool)) public approval;
 
     modifier onlySeller() {
-        require(msg.sender == seller, "Only the seller can call this method");
+        require(msg.sender == seller, "Only the seller can call this method.");
         _;
     }
 
     modifier onlyBuyer(uint256 _nftId) {
         require(
             msg.sender == buyer[_nftId],
-            "Only the buyer can call this method"
+            "Only the buyer can call this method."
         );
         _;
     }
@@ -36,7 +36,17 @@ contract Escrow {
     modifier onlyInspector() {
         require(
             msg.sender == inspector,
-            "Only the inspector can call this method"
+            "Only the inspector can call this method."
+        );
+        _;
+    }
+
+    modifier onlyApprovers(uint256 _nftId) {
+        require(
+            msg.sender == buyer[_nftId] ||
+                msg.sender == seller ||
+                msg.sender == lender,
+            "Unauthorized approver."
         );
         _;
     }
@@ -79,7 +89,7 @@ contract Escrow {
         inspectionPassed[_nftId] = _passed;
     }
 
-    function approveSale(uint256 _nftId) public {
+    function approveSale(uint256 _nftId) public onlyApprovers(_nftId) {
         approval[_nftId][msg.sender] = true;
     }
 
