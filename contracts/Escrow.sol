@@ -93,11 +93,13 @@ contract Escrow {
         approval[_nftId][msg.sender] = true;
     }
 
-    function finalizeSale(uint256 _nftId) public {
+    function finalizeSale(uint256 _nftId) public onlySeller {
+        require(escrowAmount[_nftId] > 0, "Down payment is missing.");
         require(inspectionPassed[_nftId], "Inspection must be passed.");
-        require(approval[_nftId][buyer[_nftId]], "Buyer must approve the sale.");
-        require(approval[_nftId][seller], "Seller must approve the sale.");
-        require(approval[_nftId][lender], "Lender must approve the sale.");
+        require(approval[_nftId][buyer[_nftId]], "Buyer must approve sale.");
+        require(approval[_nftId][seller], "Seller must approve sale.");
+        require(approval[_nftId][lender], "Lender must approve sale.");
+        require(address(this).balance >= purchasePrice[_nftId], "Full payment is required.");
     }
 
     function getBalance() public view returns (uint256) {
