@@ -93,6 +93,13 @@ contract Escrow {
         approval[_nftId][msg.sender] = true;
     }
 
+    function finalizeSale(uint256 _nftId) public {
+        require(inspectionPassed[_nftId], "Inspection must be passed.");
+        require(approval[_nftId][buyer[_nftId]], "Buyer must approve the sale.");
+        require(approval[_nftId][seller], "Seller must approve the sale.");
+        require(approval[_nftId][lender], "Lender must approve the sale.");
+    }
+
     function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
