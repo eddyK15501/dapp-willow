@@ -4,11 +4,7 @@ pragma solidity ^0.8.24;
 import "hardhat/console.sol";
 
 interface IERC721 {
-    function transferFrom(
-        address _from, 
-        address _to, 
-        uint256 _id
-    ) external;
+    function transferFrom(address _from, address _to, uint256 _id) external;
 }
 
 contract Escrow {
@@ -21,6 +17,7 @@ contract Escrow {
     mapping(uint256 => uint256) public purchasePrice;
     mapping(uint256 => uint256) public escrowAmount;
     mapping(uint256 => address) public buyer;
+    mapping(uint256 => bool) public inspectionPassed;
 
     modifier onlySeller() {
         require(msg.sender == seller, "Only the seller can call this method");
@@ -28,14 +25,25 @@ contract Escrow {
     }
 
     modifier onlyBuyer(uint256 _nftId) {
-        require(msg.sender == buyer[_nftId], "Only the buyer can call this method");
+        require(
+            msg.sender == buyer[_nftId],
+            "Only the buyer can call this method"
+        );
+        _;
+    }
+
+    modifier onlyInspector() {
+        require(
+            msg.sender == inspector,
+            "Only the inspector can call this method"
+        );
         _;
     }
 
     constructor(
-        address _nftAddress, 
-        address payable _seller, 
-        address _lender, 
+        address _nftAddress,
+        address payable _seller,
+        address _lender,
         address _inspector
     ) {
         nftAddress = _nftAddress;
@@ -45,8 +53,8 @@ contract Escrow {
     }
 
     function list(
-        uint256 _nftId, 
-        uint256 _purchasePrice, 
+        uint256 _nftId,
+        uint256 _purchasePrice,
         uint256 _escrowAmount,
         address _buyer
     ) public payable onlySeller {
@@ -63,9 +71,16 @@ contract Escrow {
         require(msg.value >= escrowAmount[_nftId]);
     }
 
-    function getBalance() public view returns(uint256) {
+    function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
-    
+
+    function updateInspectionStatus(
+        uint256 _nftId,
+        bool _passed
+    ) public onlyInspector {
+        inspectionPassed[_nftId] = _passed;
+    }
+
     receive() external payable {}
 }
