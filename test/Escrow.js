@@ -158,8 +158,8 @@ describe('Escrow', () => {
       await transaction.wait();
     });
 
-    it('works for now...', async () => {
-      console.log('WORKING')
+    it('Updates contract balance', async () => {
+      expect(await escrow.getBalance()).to.be.equal(0);
     });
   });
 });

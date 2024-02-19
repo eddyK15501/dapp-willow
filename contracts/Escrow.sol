@@ -99,7 +99,10 @@ contract Escrow {
         require(approval[_nftId][buyer[_nftId]], "Buyer must approve sale.");
         require(approval[_nftId][seller], "Seller must approve sale.");
         require(approval[_nftId][lender], "Lender must approve sale.");
-        require(address(this).balance >= purchasePrice[_nftId], "Full payment is required.");
+        require(address(this).balance >= purchasePrice[_nftId], "Full payment from lender is required.");
+
+        (bool success, ) = seller.call{value: address(this).balance}("");
+        require(success);
     }
 
     function getBalance() public view returns (uint256) {
