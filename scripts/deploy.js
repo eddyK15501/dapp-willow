@@ -46,6 +46,18 @@ async function main() {
     const transaction = await realEstate.connect(seller).approve(escrow.address, i + 1);
     await transaction.wait();
   }
+
+  // List properties
+  let transaction = await escrow.connect(seller).list(1, tokens(200), tokens(40), buyer.address);
+  await transaction.wait();
+
+  transaction = await escrow.connect(seller).list(2, tokens(300), tokens(60), buyer.address);
+  await transaction.wait();
+
+  transaction = await escrow.connect(seller).list(3, tokens(250), tokens(50), buyer.address);
+  await transaction.wait();
+
+  console.log('Deployment finished.');
 }
 
 // We recommend this pattern to be able to use async/await everywhere
