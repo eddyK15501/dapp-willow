@@ -4,7 +4,12 @@
 // You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
-const hre = require('hardhat');
+const { ethers } = require('hardhat');
+
+// Convert into equivalent value in wei
+const tokens = (n) => {
+  return ethers.parseUnits(n.toString(), 'ether');
+};
 
 async function main() {
   // Get ether accounts for deployment
@@ -13,9 +18,9 @@ async function main() {
   // Deploy Real Estate Contract
   const rsFactory = await ethers.getContractFactory('RealEstate');
   const realEstate = await rsFactory.deploy();
-  await realEstate.deployed();
+  await realEstate.waitForDeployment();
 
-  console.log(`Real Estate Contract deployed at: ${realEstate.target}`);
+  console.log(`Real Estate Contract deployed at: ${await realEstate.getAddress()}`);
 
   // Mint NFT properties as the seller
   for (let i = 0; i < 3; i++) {
@@ -39,11 +44,11 @@ async function main() {
     lender.address,
     inspector.address
   );
-  await escrow.deployed();
+  await escrow.waitForDeployment();
 
   // Approve NFT properties to the Escrow contract
   for (let i = 0; i < 3; i++) {
-    const transaction = await realEstate.connect(seller).approve(escrow.address, i + 1);
+    const transaction = await realEstate.connect(seller).approve(escrow.target, i + 1);
     await transaction.wait();
   }
 
