@@ -46,6 +46,8 @@ async function main() {
   );
   await escrow.waitForDeployment();
 
+  console.log(`Escrow Contract deployed at: ${await escrow.getAddress()}`);
+
   // Approve NFT properties to the Escrow contract
   for (let i = 0; i < 3; i++) {
     const transaction = await realEstate.connect(seller).approve(escrow.target, i + 1);
