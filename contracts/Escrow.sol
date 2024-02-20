@@ -121,6 +121,14 @@ contract Escrow {
         IERC721(nftAddress).transferFrom(address(this), buyer[_nftId], _nftId);
     }
 
+    function cancelSale(uint256 _nftId) public {
+        if (inspectionPassed[_nftId] == false) {
+            payable(buyer[_nftId]).transfer(address(this).balance);
+        } else {
+            payable(seller).transfer(address(this).balance);
+        }
+    }
+
     function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
