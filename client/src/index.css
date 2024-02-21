@@ -10,8 +10,8 @@
   --clr-white: #FFFFFF;
   --clr-black: #202020;
   --clr-grey: #707070;
-  --clr-blue: #6C63FF;
-  --clr-blue-2: #4c46b6;
+  --clr-blue: #3f62ee;
+  --clr-blue-2: #2732c3;
   --clr-green: #4fb646;
 }
 
@@ -47,7 +47,8 @@ nav {
 .nav__brand h1 {
   color: var(--clr-blue);
   font-size: 2.5em;
-  font-weight: 800;
+  font-weight: 700;
+  letter-spacing: -0.05rem;
 }
 
 .nav__links {

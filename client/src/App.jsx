@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
+import Navigation from './components/Navigation';
 
 import RealEstate from '../abi/RealEstate.json';
 import Escrow from '../abi/Escrow.json';
-
 import config from '../config.json';
 
 function App() {
@@ -21,11 +21,12 @@ function App() {
   }, [setAccount]);
 
   return (
-    <div>
+    <>
+      <Navigation />
       <div className='cards__section'>
         <h3>Welcome to Willow!</h3>
       </div>
-    </div>
+    </>
   )
 }
 
