@@ -10,6 +10,9 @@ function App() {
   const loadData = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum);
     console.log(provider);
+
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    console.log(accounts);
   }
 
   useEffect(() => {
