@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx hardhat node",
+    "dev": "cd client && npm run dev",
     "test": "npx hardhat test",
-    "local": "npx hardhat run scripts/deploy.js --network localhost"
+    "local": "npx hardhat run scripts/deploy.js --network localhost",
+    "start-chain": "npx hardhat node"
   },
   "author": "",
   "license": "MIT",
