@@ -14,8 +14,8 @@ function App() {
 
     window.ethereum.on('accountsChanged', async () => {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const accountOne = ethers.utils?.getAddress(accounts[0]);
-      setAccount(accountOne);
+      // const accountOne = ethers.utils?.getAddress(accounts[0]);
+      setAccount(accounts[0]);
     })
   }
 
