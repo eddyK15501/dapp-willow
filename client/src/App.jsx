@@ -9,12 +9,18 @@ import config from '../config.json';
 function App() {
   const [account, setAccount] = useState(null);
 
-  const loadData = async () => {
+  const loadBlockchainData = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum);
+
+    window.ethereum.on('accountsChanged', async () => {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const accountOne = ethers.utils?.getAddress(accounts[0]);
+      setAccount(accountOne);
+    })
   }
 
   useEffect(() => {
-    loadData();
+    loadBlockchainData();
   }, []);
 
   return (
