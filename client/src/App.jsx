@@ -29,7 +29,7 @@ function App() {
       <Navigation account={account} setAccount={setAccount} />
       <Search />
       <div className='cards__section'>
-        <h3>Welcome to Willow!</h3>
+        <h3>Trending Homes</h3>
       </div>
     </>
   )

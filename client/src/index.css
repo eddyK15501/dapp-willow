@@ -37,7 +37,6 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 20px;
 }
 
@@ -57,7 +56,6 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-
   list-style: none;
 }
 
@@ -78,17 +76,13 @@ nav {
   width: 175px;
   height: 50px;
   margin: 0 auto;
-
   background-color: var(--clr-blue);
   color: var(--clr-white);
-
   border: none;
   border-radius: 4px;
-
   font-family: "Open Sans";
   font-size: 1.10em;
   font-weight: 600;
-
   cursor: pointer;
   transition: all 250ms ease;
 }
@@ -170,13 +164,10 @@ header {
 .card {
   width: 350px;
   height: 275px;
-
   border: 1px solid var(--clr-black);
   margin: 10px auto;
-
   cursor: pointer;
   position: relative;
-
   transition: all 250ms ease;
 }
 
@@ -197,11 +188,8 @@ header {
 .card__info {
   width: 100%;
   height: 45%;
-
   background-color: var(--clr-white);
-
   padding: 5px 10px;
-
   position: absolute;
   bottom: 0;
   left: 0;
@@ -226,7 +214,6 @@ header {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.7);
-
   position: fixed;
   top: 50%;
   left: 50%;
@@ -238,18 +225,15 @@ header {
   /* grid-template-columns: repeat(2, 1fr); */
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
   align-items: center;
-
   width: 80%;
   height: 70%;
   margin: 0 auto;
   padding: 20px;
-
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-
   background: var(--clr-white);
 }
 
@@ -266,13 +250,10 @@ header {
   position: absolute;
   top: 10px;
   right: 10px;
-
   width: 30px;
   height: 30px;
-
   background: transparent;
   border: none;
-
   cursor: pointer;
 }
 
@@ -285,7 +266,6 @@ header {
   height: 100%;
   margin: 0 20px;
   padding-right: 40px;
-
   overflow-y: scroll;
 }
 
@@ -303,17 +283,13 @@ header {
 .home__contact,
 .home__owned {
   margin: 20px 5px;
-
   background-color: var(--clr-blue);
   color: var(--clr-white);
-
   border: none;
   border-radius: 4px;
-
   font-family: "Open Sans";
   font-size: 1.10em;
   font-weight: 600;
-
   cursor: pointer;
   transition: all 250ms ease;
 }
@@ -330,10 +306,8 @@ header {
 .home__contact {
   width: 150px;
   height: 50px;
-
   background-color: transparent;
   color: var(--clr-blue);
-
   border: 1px solid var(--clr-blue);
 }
 
@@ -345,11 +319,9 @@ header {
 .home__owned {
   height: 50px;
   background-color: var(--clr-green);
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   cursor: default;
 }
 
