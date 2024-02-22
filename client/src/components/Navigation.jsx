@@ -25,9 +25,15 @@ const Navigation = ({ account, setAccount }) => {
         <img src='' alt='' />
         <h1>Willow</h1>
       </div>
-      <button type='button' className='nav__connect'>
-        0x0...
-      </button>
+      {account ? (
+        <button type='button' className='nav__connect'>
+            {`${account.slice(0, 7)}...${account.slice(37, 42)}`}
+        </button>
+      ) : (
+        <button type='button' className='nav__connect' onClick={connectHandler}>
+            Connect
+        </button>
+      )}
     </nav>
   );
 };
