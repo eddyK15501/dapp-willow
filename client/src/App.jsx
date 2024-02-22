@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import RealEstate from '../abi/RealEstate.json';
 import Escrow from '../abi/Escrow.json';
 import config from '../config.json';
+import Search from './components/Search';
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -26,6 +27,7 @@ function App() {
   return (
     <>
       <Navigation account={account} setAccount={setAccount} />
+      <Search />
       <div className='cards__section'>
         <h3>Welcome to Willow!</h3>
       </div>

@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 * {
   margin: 0;
@@ -99,11 +101,10 @@ nav {
 /* -- HEADER -- */
 
 header {
-  background-image: url("./assets/houses.png");
-  background-position: center;
+  background-image: url("./assets/unsplash-three.avif");
+  background-position: 0 88%;
   background-size: cover;
-  min-height: 40vh;
-
+  min-height: 50vh;
   position: relative;
 }
 
@@ -112,32 +113,38 @@ header {
   top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
-
+  font-family: "Noto Serif", serif;
   color: var(--clr-white);
   font-size: 2em;
-
   width: 100%;
   text-align: center;
+  letter-spacing: -0.1rem;
 }
 
 .header__search {
-  padding: 25px;
+  border: 1px solid rgb(194, 194, 194);
+  border-radius: 0.3rem;
+  padding: 25px 20px;
   min-width: 40%;
-
+  font-family: "Roboto", serif;
   position: absolute;
-  top: 45%;
+  top: 47%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-size: 1.05rem;
 }
 
 .header__search::placeholder {
-  font-family: "Open Sans";
-  font-size: 1.25em;
-  font-weight: 600;
+  font-family: "Roboto", serif;
+  font-size: 1.05rem;
 }
 
 .header__search:hover {
-  outline: 1px solid var(--clr-blue);
+  outline: 1px solid var(--clr-blue-2);
+}
+
+.header__search:focus {
+  outline: none;
 }
 
 /* ------------------------------------------------------ */

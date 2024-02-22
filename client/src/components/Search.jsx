@@ -1,15 +1,16 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 
 const Search = () => {
   return (
-    <section>
-      <h2 className='header__title'>Search it. Explore it. Buy it.</h2>
+    <header>
+      <h2 className='header__title'>Search. Explore. Purchase. Own.</h2>
       <input
         type='text'
         className='header__search'
-        placeholder='Enter a city, address, or ZIP code'
+        placeholder='Enter an address, neighborhood, city, or ZIP code'
       />
-    </section>
+    </header>
   );
 };
 
