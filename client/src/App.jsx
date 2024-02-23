@@ -4,8 +4,8 @@ import Navigation from './components/Navigation';
 import Search from './components/Search';
 
 // Contract ABI
-// import RealEstate from '../abi/RealEstate.json';
-// import Escrow from '../abi/Escrow.json';
+import realEstateABI from '../abi/RealEstate.json';
+import escrowABI from '../abi/Escrow.json';
 
 // Config
 import config from '../config.json';
@@ -19,13 +19,23 @@ function App() {
     setProvider(getProvider);
 
     const network = await getProvider.getNetwork();
-    console.log(network);
 
-    const escrowAddress = config[network.chainId].escrow.address;
     const realEstateAddress = config[network.chainId].realEstate.address;
-    console.log(escrowAddress);
-    console.log(realEstateAddress);
+    const escrowAddress = config[network.chainId].escrow.address;
+    // console.log(realEstateAddress);
+    // console.log(escrowAddress);
 
+    const realEstate = new ethers.Contract(
+      realEstateAddress,
+      realEstateABI,
+      getProvider
+    );
+    const escrow = new ethers.Contract(escrowAddress, escrowABI, getProvider);
+    // console.log(realEstate);
+    // console.log(escrow);
+  };
+
+  const handleChangeAccounts = () => {
     window.ethereum.on('accountsChanged', async () => {
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
@@ -37,6 +47,7 @@ function App() {
 
   useEffect(() => {
     loadBlockchainData();
+    handleChangeAccounts();
   }, []);
 
   return (
@@ -49,19 +60,20 @@ function App() {
           Properties currently being viewed at the moment
         </p>
         <div className='cards'>
-          <div className="card">
-            <div className="card__image">
-              <img src="" alt="Home" />
+          <div className='card'>
+            <div className='card__image'>
+              <img src='' alt='Home' />
             </div>
-            <div className="card__info">
+            <div className='card__info'>
               <h4>200 ETH</h4>
               <p style={{ fontWeight: '400', marginTop: '1px' }}>
                 <strong>1</strong> bds <span>|</span>
-                <strong>{" "}2</strong> ba <span>|</span>
-                <strong>{" "}3</strong> sqft <span>|</span>
-                {" "}House for sale
+                <strong> 2</strong> ba <span>|</span>
+                <strong> 3</strong> sqft <span>|</span> House for sale
               </p>
-              <p style={{ fontSize: '0.85rem' }}>987 Oak Drive, Sunnydale, Faketown</p>
+              <p style={{ fontSize: '0.85rem' }}>
+                987 Oak Drive, Sunnydale, Faketown
+              </p>
             </div>
           </div>
         </div>
