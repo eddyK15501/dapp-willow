@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-// import { ethers } from 'ethers';
+import { ethers } from 'ethers';
 import Navigation from './components/Navigation';
 
 // import RealEstate from '../abi/RealEstate.json';
@@ -8,10 +8,15 @@ import Navigation from './components/Navigation';
 import Search from './components/Search';
 
 function App() {
+  const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
 
   const loadBlockchainData = async () => {
-    // const provider = new ethers.BrowserProvider(window.ethereum);
+    const getProvider = new ethers.BrowserProvider(window.ethereum);
+    setProvider(getProvider);
+
+    const network = await getProvider.getNetwork();
+    console.log(network);
 
     window.ethereum.on('accountsChanged', async () => {
       const accounts = await window.ethereum.request({
