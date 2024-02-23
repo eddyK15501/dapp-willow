@@ -15,34 +15,40 @@ function App() {
   const [account, setAccount] = useState(null);
 
   const loadBlockchainData = async () => {
-    // Set provider
-    const getProvider = new ethers.BrowserProvider(window.ethereum);
-    setProvider(getProvider);
+    if (window.ethereum) {
+      // Set provider
+      const getProvider = new ethers.BrowserProvider(window.ethereum);
+      setProvider(getProvider);
 
-    // Get network metadata
-    const network = await getProvider.getNetwork();
+      // Get network metadata
+      const network = await getProvider.getNetwork();
 
-    // Deployed contract addresses from config.json
-    const realEstateAddress = config[network.chainId].realEstate.address;
-    const escrowAddress = config[network.chainId].escrow.address;
+      // Deployed contract addresses from config.json
+      const realEstateAddress = config[network.chainId].realEstate.address;
+      const escrowAddress = config[network.chainId].escrow.address;
 
-    // Create new contract object instances with the contract address, ABI, and provider
-    const realEstate = new ethers.Contract(
-      realEstateAddress,
-      realEstateABI,
-      getProvider
-    );
-    const escrow = new ethers.Contract(escrowAddress, escrowABI, getProvider);
+      // Create new contract object instances with the contract address, ABI, and provider
+      const realEstate = new ethers.Contract(
+        realEstateAddress,
+        realEstateABI,
+        getProvider
+      );
+      const totalSupply = await realEstate.totalSupply();
+
+      // const escrow = new ethers.Contract(escrowAddress, escrowABI, getProvider);
+    }
   };
 
   const handleChangeAccounts = () => {
-    window.ethereum.on('accountsChanged', async () => {
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', async () => {
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        });
+        // const accountOne = ethers.utils?.getAddress(accounts[0]);
+        setAccount(accounts[0]);
       });
-      // const accountOne = ethers.utils?.getAddress(accounts[0]);
-      setAccount(accounts[0]);
-    });
+    }
   };
 
   useEffect(() => {
