@@ -15,24 +15,24 @@ function App() {
   const [account, setAccount] = useState(null);
 
   const loadBlockchainData = async () => {
+    // Set provider
     const getProvider = new ethers.BrowserProvider(window.ethereum);
     setProvider(getProvider);
 
+    // Get network metadata
     const network = await getProvider.getNetwork();
 
+    // Deployed contract addresses from config.json
     const realEstateAddress = config[network.chainId].realEstate.address;
     const escrowAddress = config[network.chainId].escrow.address;
-    // console.log(realEstateAddress);
-    // console.log(escrowAddress);
 
+    // Create new contract object instances with the contract address, ABI, and provider
     const realEstate = new ethers.Contract(
       realEstateAddress,
       realEstateABI,
       getProvider
     );
     const escrow = new ethers.Contract(escrowAddress, escrowABI, getProvider);
-    // console.log(realEstate);
-    // console.log(escrow);
   };
 
   const handleChangeAccounts = () => {
