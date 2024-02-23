@@ -34,6 +34,7 @@ function App() {
         getProvider
       );
       const totalSupply = await realEstate.totalSupply();
+      console.log(totalSupply);
 
       // const escrow = new ethers.Contract(escrowAddress, escrowABI, getProvider);
     }

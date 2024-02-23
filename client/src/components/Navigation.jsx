@@ -1,11 +1,16 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 
 const Navigation = ({ account, setAccount }) => {
   const connectHandler = async () => {
-    const accounts = await window.ethereum.request({
-      method: 'eth_requestAccounts',
-    });
-    setAccount(accounts[0]);
+    if (!window.ethereum) {
+      alert("Please connect your Metamask.");
+    } else {
+      const accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+      setAccount(accounts[0]);
+    }
   };
 
   return (
