@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import Navigation from './components/Navigation';
+import Search from './components/Search';
 
+// Contract ABI
 // import RealEstate from '../abi/RealEstate.json';
 // import Escrow from '../abi/Escrow.json';
-// import config from '../config.json';
-import Search from './components/Search';
+
+// Config
+import config from '../config.json';
 
 function App() {
   const [provider, setProvider] = useState(null);
@@ -17,6 +20,11 @@ function App() {
 
     const network = await getProvider.getNetwork();
     console.log(network);
+
+    const escrowAddress = config[network.chainId].escrow.address;
+    const realEstateAddress = config[network.chainId].realEstate.address;
+    console.log(escrowAddress);
+    console.log(realEstateAddress);
 
     window.ethereum.on('accountsChanged', async () => {
       const accounts = await window.ethereum.request({
