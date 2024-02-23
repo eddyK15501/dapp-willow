@@ -13,11 +13,14 @@ import config from '../config.json';
 function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
+  
+  // window.ethereum destructed
+  const { ethereum } = window;
 
   const loadBlockchainData = async () => {
-    if (window.ethereum) {
+    if (ethereum) {
       // Set provider
-      const getProvider = new ethers.BrowserProvider(window.ethereum);
+      const getProvider = new ethers.BrowserProvider(ethereum);
       setProvider(getProvider);
 
       // Get network metadata
@@ -33,17 +36,20 @@ function App() {
         realEstateABI,
         getProvider
       );
+
+      // console.log(realEstate);
+
       const totalSupply = await realEstate.totalSupply();
-      console.log(totalSupply);
+      console.log(totalSupply.toString());
 
       // const escrow = new ethers.Contract(escrowAddress, escrowABI, getProvider);
     }
   };
 
   const handleChangeAccounts = () => {
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', async () => {
-        const accounts = await window.ethereum.request({
+    if (ethereum) {
+      ethereum.on('accountsChanged', async () => {
+        const accounts = await ethereum.request({
           method: 'eth_requestAccounts',
         });
         // const accountOne = ethers.utils?.getAddress(accounts[0]);
