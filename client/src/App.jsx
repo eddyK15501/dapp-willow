@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import Navigation from './components/Navigation';
@@ -15,6 +16,7 @@ function App() {
   const [account, setAccount] = useState(null);
   const [realEstate, setRealEstate] = useState(null);
   const [escrow, setEscrow] = useState(null);
+  const [homes, setHomes] = useState([]);
 
   // window.ethereum destructed
   const { ethereum } = window;
@@ -44,14 +46,17 @@ function App() {
       setEscrow(escrowContract);
 
       const totalSupply = await realEstateContract.totalSupply();
+      let ipfsData = [];
 
       // Get token URI and fetch() IPFS metadata
       for (let i = 1; i <= totalSupply; i++) {
         const uri = await realEstateContract.tokenURI(i);
         const response = await fetch(uri);
-        const data = await response.json();
-        console.log(data);
+        const metadata = await response.json();
+        ipfsData.push(metadata);
       }
+      setHomes(ipfsData);
+      console.log(ipfsData);
     }
   };
 
