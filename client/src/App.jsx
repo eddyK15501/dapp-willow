@@ -13,11 +13,13 @@ import config from '../config.json';
 function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
+  const [realEstate, setRealEstate] = useState(null);
+  const [escrow, setEscrow] = useState(null);
 
   // window.ethereum destructed
   const { ethereum } = window;
 
-  const loadBlockchainData = async () => {
+  const loadContractData = async () => {
     if (ethereum) {
       // Set provider
       const getProvider = new ethers.BrowserProvider(ethereum);
@@ -27,20 +29,29 @@ function App() {
       const network = await getProvider.getNetwork();
 
       // Create new contract object instances
-      const realEstate = new ethers.Contract(
+      const realEstateContract = new ethers.Contract(
         config[network.chainId].realEstate.address,
         realEstateABI,
         getProvider
       );
-      const totalSupply = await realEstate.totalSupply();
+      setRealEstate(realEstateContract);
 
-      const escrow = new ethers.Contract(
+      const escrowContract = new ethers.Contract(
         config[network.chainId].escrow.address,
         escrowABI,
         getProvider
       );
+      setEscrow(escrowContract);
 
-      console.log(await escrow.seller());
+      const totalSupply = await realEstateContract.totalSupply();
+
+      // Get token URI and fetch() IPFS metadata
+      for (let i = 1; i <= totalSupply; i++) {
+        const uri = await realEstateContract.tokenURI(i);
+        const response = await fetch(uri);
+        const data = await response.json();
+        console.log(data);
+      }
     }
   };
 
@@ -57,7 +68,7 @@ function App() {
   };
 
   useEffect(() => {
-    loadBlockchainData();
+    loadContractData();
     handleChangeAccounts();
   }, []);
 
