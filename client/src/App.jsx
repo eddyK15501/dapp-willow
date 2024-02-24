@@ -13,7 +13,7 @@ import config from '../config.json';
 function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
-  
+
   // window.ethereum destructed
   const { ethereum } = window;
 
@@ -26,23 +26,21 @@ function App() {
       // Get network metadata
       const network = await getProvider.getNetwork();
 
-      // Deployed contract addresses from config.json
-      const realEstateAddress = config[network.chainId].realEstate.address;
-      const escrowAddress = config[network.chainId].escrow.address;
-
-      // Create new contract object instances with the contract address, ABI, and provider
+      // Create new contract object instances
       const realEstate = new ethers.Contract(
-        realEstateAddress,
+        config[network.chainId].realEstate.address,
         realEstateABI,
         getProvider
       );
-
-      // console.log(realEstate);
-
       const totalSupply = await realEstate.totalSupply();
-      console.log(totalSupply.toString());
 
-      // const escrow = new ethers.Contract(escrowAddress, escrowABI, getProvider);
+      const escrow = new ethers.Contract(
+        config[network.chainId].escrow.address,
+        escrowABI,
+        getProvider
+      );
+
+      console.log(await escrow.seller());
     }
   };
 
