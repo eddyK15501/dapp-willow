@@ -81,7 +81,7 @@ function App() {
     <>
       <Navigation account={account} setAccount={setAccount} />
       <Search />
-      <Card /> 
+      <Card homes={homes} /> 
     </>
   );
 }
