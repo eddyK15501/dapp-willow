@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
@@ -15,7 +16,6 @@ import config from '../config.json';
 function App() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
-  const [realEstate, setRealEstate] = useState(null);
   const [escrow, setEscrow] = useState(null);
   const [homes, setHomes] = useState([]);
 
@@ -37,7 +37,6 @@ function App() {
         realEstateABI,
         getProvider
       );
-      setRealEstate(realEstateContract);
 
       const escrowContract = new ethers.Contract(
         config[network.chainId].escrow.address,
@@ -81,7 +80,12 @@ function App() {
     <>
       <Navigation account={account} setAccount={setAccount} />
       <Search />
-      <Card homes={homes} /> 
+      <Card
+        homes={homes}
+        provider={provider}
+        account={account}
+        escrow={escrow}
+      />
     </>
   );
 }

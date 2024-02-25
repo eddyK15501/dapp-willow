@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Home from './Home';
 
-const Card = ({ homes }) => {
+const Card = ({ homes, provider, account, escrow }) => {
   const [home, setHome] = useState({});
   const [toggle, setToggle] = useState(false);
 
@@ -46,7 +46,15 @@ const Card = ({ homes }) => {
           })}
         </div>
       </div>
-      {toggle && <Home />}
+      {toggle && (
+        <Home
+          home={home}
+          provider={provider}
+          account={account}
+          escrow={escrow}
+          toggleHome={toggleHome}
+        />
+      )}
     </>
   );
 };
