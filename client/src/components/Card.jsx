@@ -8,7 +8,7 @@ const Card = ({ homes, provider, account, escrow }) => {
 
   const toggleHome = (prop) => {
     setHome(prop);
-    !toggle ? setToggle(true) : setToggle(false);
+    setToggle(prevState => !prevState);
   };
 
   return (
