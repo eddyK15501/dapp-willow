@@ -22,8 +22,6 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
           <h2 style={{ fontWeight: '600', marginTop: '1rem' }}>
             {home.attributes[0].value} ETH
           </h2>
-
-
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <button className='home__buy'>
                 Buy Now
@@ -37,7 +35,11 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
           <p>{home.description}</p>
           <hr />
           <h2>Facts and features</h2>
-
+          <ul>
+            {home.attributes.map((att, index) => (
+              <li key={index}>{att.trait_type} : {att.value}</li>
+            ))}
+          </ul>
           
 
         </div>
