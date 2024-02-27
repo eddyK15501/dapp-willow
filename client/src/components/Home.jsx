@@ -3,27 +3,44 @@ import { useState  } from 'react';
 import closeIcon from '../assets/close.svg';
 
 const Home = ({ home, provider, account, escrow, toggleHome }) => {
+  const [buyerApproval, setBuyerApproval] = useState(false);
+  const [sellerApproval, setSellerApproval] = useState(false);
+  const [lenderApproval, setLenderApproval] = useState(false);
+  const [isInspected, setIsInspected] = useState(false);
+
   const [buyer, setBuyer] = useState(null);
   const [seller, setSeller] = useState(null);
   const [lender, setLender] = useState(null);
   const [inspector, setInspector] = useState(null);
 
   const fetchDetails = async () => {
-    // Get buyer address
+    // ===== Buyer =====
     const buyerAddress = await escrow.buyer(home.id);
     setBuyer(buyerAddress);
 
-    // Get seller address
+    const checkBuyer = await escrow.approval(home.id, buyer);
+    setBuyerApproval(checkBuyer);
+
+    // ===== Seller =====
     const sellerAddress = await escrow.seller();
     setSeller(sellerAddress);
 
-    // Get lender address
+    const checkSeller = await escrow.approval(home.id, seller);
+    setSellerApproval(checkSeller);
+
+    // ===== Lender =====
     const lenderAddress = await escrow.lender();
     setLender(lenderAddress);
 
-    // Get inspector address
+    const checkLender = await escrow.approval(home.id, lender);
+    setLenderApproval(checkLender);
+
+    // ===== Inspector =====
     const inspectorAddress = await escrow.inspector();
     setInspector(inspectorAddress);
+
+    const checkInspection = await escrow.inspectionPassed(home.id);
+    setIsInspected(checkInspection);
   }
 
   return (
