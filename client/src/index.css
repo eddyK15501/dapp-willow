@@ -335,6 +335,11 @@ header {
   cursor: default;
 }
 
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 @media screen and (max-width: 768px) {
   nav {
     grid-template-columns: repeat(2, 1fr);
