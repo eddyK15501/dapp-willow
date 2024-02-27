@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useState  } from 'react';
+import { useState, useEffect } from 'react';
 import closeIcon from '../assets/close.svg';
 
 const Home = ({ home, provider, account, escrow, toggleHome }) => {
@@ -17,31 +18,43 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
     // ===== Buyer =====
     const buyerAddress = await escrow.buyer(home.id);
     setBuyer(buyerAddress);
+    console.log(`Address of the buyer of this property: ${buyerAddress}`);
 
-    const checkBuyer = await escrow.approval(home.id, buyer);
+    const checkBuyer = await escrow.approval(home.id, buyerAddress);
     setBuyerApproval(checkBuyer);
+    console.log(`Has the buyer approved the sale of this property? ${checkBuyer}`);
 
     // ===== Seller =====
     const sellerAddress = await escrow.seller();
     setSeller(sellerAddress);
+    console.log(`Address of the seller of this property: ${sellerAddress}`);
 
-    const checkSeller = await escrow.approval(home.id, seller);
+    const checkSeller = await escrow.approval(home.id, sellerAddress);
     setSellerApproval(checkSeller);
+    console.log(`Has the seller approved the sale of this property? ${checkSeller}`);
 
     // ===== Lender =====
     const lenderAddress = await escrow.lender();
     setLender(lenderAddress);
+    console.log(`Address of the lender: ${sellerAddress}`);
 
-    const checkLender = await escrow.approval(home.id, lender);
+    const checkLender = await escrow.approval(home.id, lenderAddress);
     setLenderApproval(checkLender);
+    console.log(`Has the lender approved the sale of this property? ${checkLender}`);
 
     // ===== Inspector =====
     const inspectorAddress = await escrow.inspector();
     setInspector(inspectorAddress);
+    console.log(`Address of the inspector, inspecting this property: ${inspectorAddress}`);
 
     const checkInspection = await escrow.inspectionPassed(home.id);
     setIsInspected(checkInspection);
+    console.log(`Has the inspector approved the inspection of this property? ${checkInspection}`);
   }
+
+  useEffect(() => {
+    fetchDetails();
+  }, [buyerApproval, sellerApproval, lenderApproval, isInspected])
 
   return (
     <div className='home'>
