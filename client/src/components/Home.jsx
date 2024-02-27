@@ -1,8 +1,31 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import { useState  } from 'react';
 import closeIcon from '../assets/close.svg';
 
 const Home = ({ home, provider, account, escrow, toggleHome }) => {
+  const [buyer, setBuyer] = useState(null);
+  const [seller, setSeller] = useState(null);
+  const [lender, setLender] = useState(null);
+  const [inspector, setInspector] = useState(null);
+
+  const fetchDetails = async () => {
+    // Get buyer address
+    const buyerAddress = await escrow.buyer(home.id);
+    setBuyer(buyerAddress);
+
+    // Get seller address
+    const sellerAddress = await escrow.seller();
+    setSeller(sellerAddress);
+
+    // Get lender address
+    const lenderAddress = await escrow.lender();
+    setLender(lenderAddress);
+
+    // Get inspector address
+    const inspectorAddress = await escrow.inspector();
+    setInspector(inspectorAddress);
+  }
+
   return (
     <div className='home'>
       <div className='home__details'>
