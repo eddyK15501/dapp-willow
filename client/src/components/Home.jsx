@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import closeIcon from '../assets/close.svg';
 
@@ -8,6 +8,8 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
   const [sellerApproval, setSellerApproval] = useState(false);
   const [lenderApproval, setLenderApproval] = useState(false);
   const [isInspected, setIsInspected] = useState(false);
+
+  const [owner, setOwner] = useState(null);
 
   const [buyer, setBuyer] = useState(null);
   const [seller, setSeller] = useState(null);
@@ -18,43 +20,55 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
     // ===== Buyer =====
     const buyerAddress = await escrow.buyer(home.id);
     setBuyer(buyerAddress);
-    console.log(`Address of the buyer of this property: ${buyerAddress}`);
+    // console.log(`Address of the buyer of this property: ${buyerAddress}`);
 
     const checkBuyer = await escrow.approval(home.id, buyerAddress);
     setBuyerApproval(checkBuyer);
-    console.log(`Has the buyer approved the sale of this property? ${checkBuyer}`);
+    // console.log(`Has the buyer approved the sale of this property? ${checkBuyer}`);
 
     // ===== Seller =====
     const sellerAddress = await escrow.seller();
     setSeller(sellerAddress);
-    console.log(`Address of the seller of this property: ${sellerAddress}`);
+    // console.log(`Address of the seller of this property: ${sellerAddress}`);
 
     const checkSeller = await escrow.approval(home.id, sellerAddress);
     setSellerApproval(checkSeller);
-    console.log(`Has the seller approved the sale of this property? ${checkSeller}`);
+    // console.log(`Has the seller approved the sale of this property? ${checkSeller}`);
 
     // ===== Lender =====
     const lenderAddress = await escrow.lender();
     setLender(lenderAddress);
-    console.log(`Address of the lender: ${sellerAddress}`);
+    // console.log(`Address of the lender: ${sellerAddress}`);
 
     const checkLender = await escrow.approval(home.id, lenderAddress);
     setLenderApproval(checkLender);
-    console.log(`Has the lender approved the sale of this property? ${checkLender}`);
+    // console.log(`Has the lender approved the sale of this property? ${checkLender}`);
 
     // ===== Inspector =====
     const inspectorAddress = await escrow.inspector();
     setInspector(inspectorAddress);
-    console.log(`Address of the inspector, inspecting this property: ${inspectorAddress}`);
+    // console.log(`Address of the inspector, inspecting this property: ${inspectorAddress}`);
 
     const checkInspection = await escrow.inspectionPassed(home.id);
     setIsInspected(checkInspection);
-    console.log(`Has the inspector approved the inspection of this property? ${checkInspection}`);
+    // console.log(`Has the inspector approved the inspection of this property? ${checkInspection}`);
   }
+
+  const fetchOwner = async () => {
+    if (await escrow.isListed(home.id)) return;
+
+    const owner = await escrow.buyer(home.id);
+    setOwner(owner);
+}
 
   useEffect(() => {
     fetchDetails();
+    fetchOwner();
   }, [buyerApproval, sellerApproval, lenderApproval, isInspected])
+
+  useEffect(() => {
+    console.log(account);
+  })
 
   return (
     <div className='home'>
@@ -75,20 +89,30 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
           <h2 style={{ fontWeight: '600', marginTop: '1rem' }}>
             {home.attributes[0].value} ETH
           </h2>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <button className='home__buy' style={{ marginBottom: '15px' }}>
-              Buy Now
-            </button>
-            <button className='home__contact' style={{ marginTop: '0' }}>
-              Contact Agent
-            </button>
-          </div>
+
+          {owner ? (
+            <div className="home__owned">
+              Qualified Buyer: {`${owner.slice(0, 7)}...${owner.slice(37, 42)}`}
+            </div>
+          ) : (
+            <div>
+              {(account === seller) ? (
+                <button className='home__buy'>Approve & Sell</button>
+              ) : (account === lender) ? (
+                <button className='home__buy'>Approve & Lend</button>
+              ) : (account === inspector) ? (
+                <button className='home__buy'>Approve Inspection</button>
+              ) : (
+                <button className='home__buy'>Buy Now</button>
+              )}
+
+              <button className='home__contact' style={{ marginTop: '0' }}>
+                Contact Agent
+              </button>
+            </div>
+          )}
+            
+
           <hr />
           <h2>Overview</h2>
           <p>{home.description}</p>
