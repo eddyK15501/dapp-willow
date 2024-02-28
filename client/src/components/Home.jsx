@@ -67,7 +67,7 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
   useEffect(() => {
     fetchDetails();
     fetchOwner();
-  }, [sellerApproval]);
+  }, [sellerApproval, account]);
 
   return (
     <div className='home'>
@@ -96,15 +96,13 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
           ) : (
             <div>
               {console.log('Account:', account)}
-              {console.log('Lender:', lender)}
-              {console.log('Inspector:', inspector)}
-              {console.log('Seller:', seller)}
-              {account === lender ? (
-                <button className='home__buy'>Approve & Lend</button>
-              ) : account === inspector ? (
-                <button className='home__buy'>Approve Inspection</button>
-              ) : account === seller ? (
+              
+              {account === seller ? (
                 <button className='home__buy'>Approve & Sell</button>
+                ) : account === lender ? (
+                  <button className='home__buy'>Approve & Lend</button>
+                  ) : account === inspector ? (
+                    <button className='home__buy'>Approve Inspection</button>
               ) : account === null ? (
                 <button className='home__buy disabled'>Buy Now</button>
               ) : (

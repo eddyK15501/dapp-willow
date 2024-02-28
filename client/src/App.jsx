@@ -56,11 +56,11 @@ function App() {
         ipfsData.push(metadata);
       }
       setHomes(ipfsData);
-    }
-  };
 
-  const handleChangeAccounts = () => {
-    if (ethereum) {
+      ethereum.on('chainChanged', () => {
+        window.location.reload();
+      })
+
       ethereum.on('accountsChanged', async () => {
         const accounts = await ethereum.request({
           method: 'eth_requestAccounts',
@@ -73,7 +73,6 @@ function App() {
 
   useEffect(() => {
     loadContractData();
-    handleChangeAccounts();
   }, []);
 
   return (
