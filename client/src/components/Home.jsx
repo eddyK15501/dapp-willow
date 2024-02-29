@@ -21,38 +21,30 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
       // ===== Buyer =====
       const buyerAddress = await escrow.buyer(home.id);
       setBuyer(buyerAddress);
-      // console.log(`Address of the buyer of this property: ${buyerAddress}`);
 
       const checkBuyer = await escrow.approval(home.id, buyerAddress);
       setBuyerApproval(checkBuyer);
-      // console.log(`Has the buyer approved the sale of this property? ${checkBuyer}`);
 
       // ===== Seller =====
       const sellerAddress = await escrow.seller();
       setSeller(sellerAddress);
-      // console.log(`Address of the seller of this property: ${sellerAddress}`);
 
       const checkSeller = await escrow.approval(home.id, sellerAddress);
       setSellerApproval(checkSeller);
-      // console.log(`Has the seller approved the sale of this property? ${checkSeller}`);
 
       // ===== Lender =====
       const lenderAddress = await escrow.lender();
       setLender(lenderAddress);
-      // console.log(`Address of the lender: ${lenderAddress}`);
 
       const checkLender = await escrow.approval(home.id, lenderAddress);
       setLenderApproval(checkLender);
-      // console.log(`Has the lender approved the sale of this property? ${checkLender}`);
 
       // ===== Inspector =====
       const inspectorAddress = await escrow.inspector();
       setInspector(inspectorAddress);
-      // console.log(`Address of the inspector, inspecting this property: ${inspectorAddress}`);
 
       const checkInspection = await escrow.inspectionPassed(home.id);
       setIsInspected(checkInspection);
-      // console.log(`Has the inspector approved the inspection of this property? ${checkInspection}`);
     } catch (err) {
       console.error(err);
     }
@@ -67,7 +59,7 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
   useEffect(() => {
     fetchDetails();
     fetchOwner();
-  }, [sellerApproval]);
+  }, [buyerApproval, sellerApproval, lenderApproval, isInspected]);
 
   return (
     <div className='home'>
@@ -94,12 +86,7 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
               Owned By {`${owner.slice(0, 7)}...${owner.slice(37, 42)}`}
             </div>
           ) : (
-            <div>
-              {console.log('Account:', account)}
-              {/* {console.log('Seller:', seller)}
-              {console.log('Lender:', lender)}
-              {console.log('Inspector:', inspector)} */}
-              
+            <div> 
               {account === seller ? (
                 <button className='home__buy'>Approve & Sell</button>
                 ) : account === lender ? (
@@ -111,13 +98,11 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
               ) : (
                 <button className='home__buy'>Buy Now</button>
               )}
-
               <button className='home__contact' style={{ marginTop: '0' }}>
                 Contact Agent
               </button>
             </div>
           )}
-
           <hr />
           <h2>Overview</h2>
           <p>{home.description}</p>
