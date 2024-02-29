@@ -135,7 +135,7 @@ describe('Escrow', () => {
     });
   });
 
-  describe('Sale', async () => {
+  describe('Sale', () => {
     beforeEach(async () => {
       let transaction = await escrow.connect(buyer).depositDownpay(1, { value: tokens(40) });
       await transaction.wait();
@@ -152,7 +152,7 @@ describe('Escrow', () => {
       transaction = await escrow.connect(lender).approveSale(1);
       await transaction.wait();
 
-      await lender.sendTransaction({ to: escrow.target, value: tokens(160) });
+      await lender.sendTransaction({ to: escrow.address, value: tokens(160) });
 
       transaction = await escrow.connect(seller).finalizeSale(1);
       await transaction.wait();
