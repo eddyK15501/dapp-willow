@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
+import { ethers } from 'ethers';
 
 const Navigation = ({ account, setAccount }) => {
   const connectHandler = async () => {
@@ -9,7 +10,8 @@ const Navigation = ({ account, setAccount }) => {
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       });
-      setAccount(accounts[0]);
+      const account = ethers.utils?.getAddress(accounts[0]);
+      setAccount(account);
     }
   };
 

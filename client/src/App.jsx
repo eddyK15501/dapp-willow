@@ -65,8 +65,8 @@ function App() {
         const accounts = await ethereum.request({
           method: 'eth_requestAccounts',
         });
-        // const accountOne = ethers.utils?.getAddress(accounts[0]);
-        setAccount(accounts[0]);
+        const accountOne = ethers.utils?.getAddress(accounts[0]);
+        setAccount(accountOne);
       });
     }
   };
