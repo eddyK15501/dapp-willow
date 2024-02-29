@@ -25,7 +25,7 @@ function App() {
   const loadContractData = async () => {
     if (ethereum) {
       // Set provider
-      const getProvider = new ethers.BrowserProvider(ethereum);
+      const getProvider = new ethers.providers.Web3Provider(ethereum);
       setProvider(getProvider);
 
       // Get network metadata
