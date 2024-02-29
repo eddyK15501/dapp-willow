@@ -8,7 +8,7 @@ const { ethers } = require('hardhat');
 
 // Convert into equivalent value in wei
 const tokens = (n) => {
-  return ethers.parseUnits(n.toString(), 'ether');
+  return ethers.utils.parseUnits(n.toString(), 'ether');
 };
 
 async function main() {
@@ -18,9 +18,9 @@ async function main() {
   // Deploy Real Estate Contract
   const rsFactory = await ethers.getContractFactory('RealEstate');
   const realEstate = await rsFactory.deploy();
-  await realEstate.waitForDeployment();
+  await realEstate.deployed();
 
-  console.log(`Real Estate Contract deployed at: ${await realEstate.getAddress()}`);
+  console.log(`Real Estate Contract deployed at: ${realEstate.address}`);
 
   // Mint NFT properties as the seller
   for (let i = 0; i < 3; i++) {
@@ -39,18 +39,18 @@ async function main() {
   // Deploy Escrow Contract
   const escrowFactory = await ethers.getContractFactory('Escrow');
   const escrow = await escrowFactory.deploy(
-    realEstate.target,
+    realEstate.address,
     seller.address,
     lender.address,
     inspector.address
   );
-  await escrow.waitForDeployment();
+  await escrow.deployed();
 
-  console.log(`Escrow Contract deployed at: ${await escrow.getAddress()}`);
+  console.log(`Escrow Contract deployed at: ${escrow.address}`);
 
   // Approve NFT properties to the Escrow contract
   for (let i = 0; i < 3; i++) {
-    const transaction = await realEstate.connect(seller).approve(escrow.target, i + 1);
+    const transaction = await realEstate.connect(seller).approve(escrow.address, i + 1);
     await transaction.wait();
   }
 
