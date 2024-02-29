@@ -3,7 +3,7 @@ const { ethers } = require('hardhat');
 
 // Convert into equivalent value in wei
 const tokens = (n) => {
-  return ethers.parseUnits(n.toString(), 'ether');
+  return ethers.utils.parseUnits(n.toString(), 'ether');
 };
 
 describe('Escrow', () => {
@@ -21,7 +21,7 @@ describe('Escrow', () => {
     // Deploy Escrow Contract
     const escrowFactory = await ethers.getContractFactory('Escrow');
     escrow = await escrowFactory.deploy(
-      realEstate.target,
+      realEstate.address,
       seller.address,
       lender.address,
       inspector.address
@@ -36,7 +36,7 @@ describe('Escrow', () => {
     await transaction.wait();
 
     // Approve property
-    transaction = await realEstate.connect(seller).approve(escrow.target, 1);
+    transaction = await realEstate.connect(seller).approve(escrow.address, 1);
     await transaction.wait();
 
     // List property
@@ -49,7 +49,7 @@ describe('Escrow', () => {
   describe('Deployment', () => {
     it('Returns NFT Address', async () => {
       const result = await escrow.nftAddress();
-      expect(result).to.be.equal(realEstate.target);
+      expect(result).to.be.equal(realEstate.address);
     });
 
     it('Returns seller', async () => {
@@ -70,7 +70,7 @@ describe('Escrow', () => {
 
   describe('Listing', () => {
     it('Updates ownership', async () => {
-      expect(await realEstate.ownerOf(1)).to.be.equal(escrow.target);
+      expect(await realEstate.ownerOf(1)).to.be.equal(escrow.address);
     });
 
     it('Listed NFT property is updated and marked as true', async () => {
@@ -101,7 +101,7 @@ describe('Escrow', () => {
       await transaction.wait();
 
       // Get balance with ethers.js provider
-      const contractBalance = await ethers.provider.getBalance(escrow.target);
+      const contractBalance = await ethers.provider.getBalance(escrow.address);
       expect(contractBalance).to.be.equal(tokens(40));
     });
   });
