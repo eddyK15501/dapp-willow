@@ -61,7 +61,19 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
     setOwner(owner);
   };
 
-  const handleBuyProp = async () => {}
+  const handleBuyProp = async () => {
+    // Deposit downpay as the buyer, and approve the sale
+    const signer = await provider.getSigner();
+    const escrowAmount = await escrow.escrowAmount(home.id);
+
+    let transaction = await escrow.connect(signer).depositDownpay(home.id, { value: escrowAmount });
+    await transaction.wait();
+
+    transaction = await escrow.connect(signer).approveSale(home.id);
+    await transaction.wait();
+
+    setIsBought(true);
+  }
 
   const handleSellProp = async () => {}
 
