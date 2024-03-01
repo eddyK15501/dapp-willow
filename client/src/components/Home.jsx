@@ -77,7 +77,20 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
 
   const handleSellProp = async () => {}
 
-  const handleLend = async () => {}
+  const handleLend = async () => {
+    const signer = await provider.getSigner();
+    
+    // Approve the sale as the lender
+    const transaction = await escrow.connect(signer).approveSale(home.id);
+    await transaction.wait();
+
+    // Deposit the remainder of the purchase price, to the Escrow contract
+    const totalAmount = await escrow.purchasePrice(home.id) - await escrow.escrowAmount(home.id);
+    const gasLimit = await signer.estimateGas({ to: escrow.address, value: totalAmount });
+    await signer.sendTransaction({ to: escrow.address, value: totalAmount, gasLimit: gasLimit }); 
+
+    setIsLent(true);
+  }
 
   const handleInspection = async () => {
     // Pass the inspection of the property, as the inspector
