@@ -4,10 +4,15 @@ import { useState, useEffect } from 'react';
 import closeIcon from '../assets/close.svg';
 
 const Home = ({ home, provider, account, escrow, toggleHome }) => {
+  const [isBought, setIsBought] = useState(false);
+  const [isSold, setIsSold] = useState(false);
+  const [isLent, setIsLent] = useState(false);
+  const [isInspected, setIsInspected] = useState(false);
+
   const [buyerApproval, setBuyerApproval] = useState(false);
   const [sellerApproval, setSellerApproval] = useState(false);
   const [lenderApproval, setLenderApproval] = useState(false);
-  const [isInspected, setIsInspected] = useState(false);
+  const [inspectionApproval, setInspectionApproval] = useState(false);
 
   const [owner, setOwner] = useState(null);
 
@@ -44,7 +49,7 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
       setInspector(inspectorAddress);
 
       const checkInspection = await escrow.inspectionPassed(home.id);
-      setIsInspected(checkInspection);
+      setInspectionApproval(checkInspection);
     } catch (err) {
       console.error(err);
     }
@@ -67,7 +72,7 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
   useEffect(() => {
     fetchDetails();
     fetchOwner();
-  }, [buyerApproval, sellerApproval, lenderApproval, isInspected]);
+  }, [buyerApproval, sellerApproval, lenderApproval, inspectionApproval]);
 
   return (
     <div className='home'>
@@ -96,15 +101,15 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
           ) : (
             <div> 
               {account === seller ? (
-                <button className='home__buy' onClick={handleSellProp}>Approve & Sell</button>
+                <button className='home__buy' onClick={handleSellProp} disabled={isSold}>Approve & Sell</button>
                 ) : account === lender ? (
-                  <button className='home__buy' onClick={handleLend}>Approve & Lend</button>
+                  <button className='home__buy' onClick={handleLend} disabled={isLent}>Approve & Lend</button>
                   ) : account === inspector ? (
-                    <button className='home__buy' onClick={handleInspection}>Approve Inspection</button>
+                    <button className='home__buy' onClick={handleInspection} disabled={isInspected}>Approve Inspection</button>
               ) : account === null ? (
                 <button className='home__buy disabled'>Buy Now</button>
               ) : (
-                <button className='home__buy' onClick={handleBuyProp}>Buy Now</button>
+                <button className='home__buy' onClick={handleBuyProp} disabled={isBought}>Buy Now</button>
               )}
               <button className='home__contact' style={{ marginTop: '0' }}>
                 Contact Agent
