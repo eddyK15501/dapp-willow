@@ -145,15 +145,15 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
           ) : (
             <div> 
               {account === seller ? (
-                <button className='home__buy' onClick={handleSellProp} disabled={isSold}>Approve & Sell</button>
+                <button className={`home__buy ${isSold ? 'disabled' : ''}`} onClick={handleSellProp}>Approve & Sell</button>
                 ) : account === lender ? (
-                  <button className='home__buy' onClick={handleLend} disabled={isLent}>Approve & Lend</button>
+                  <button className={`home__buy ${isLent ? 'disabled' : ''}`} onClick={handleLend}>Approve & Lend</button>
                   ) : account === inspector ? (
-                    <button className='home__buy' onClick={handleInspection} disabled={isInspected}>Approve Inspection</button>
+                    <button className={`home__buy ${isInspected ? 'disabled' : ''}`} onClick={handleInspection}>Approve Inspection</button>
               ) : account === null ? (
                 <button className='home__buy disabled'>Buy Now</button>
               ) : (
-                <button className='home__buy' onClick={handleBuyProp} disabled={isBought}>Buy Now</button>
+                <button className={`home__buy ${isBought ? 'disabled' : ''}`} onClick={handleBuyProp}>Buy Now</button>
               )}
               <button className='home__contact' style={{ marginTop: '0' }}>
                 Contact Agent
