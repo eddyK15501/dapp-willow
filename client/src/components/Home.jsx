@@ -79,7 +79,15 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
 
   const handleLend = async () => {}
 
-  const handleInspection = async () => {}
+  const handleInspection = async () => {
+    // Pass the inspection of the property, as the inspector
+    const signer = await provider.getSigner();
+
+    const transaction = await escrow.connect(signer).updateInspectionStatus(home.id, true);
+    await transaction.wait();
+
+    setIsInspected(true);
+  }
 
   useEffect(() => {
     fetchDetails();
