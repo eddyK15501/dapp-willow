@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import closeIcon from '../assets/close.svg';
 
 const Home = ({ home, provider, account, escrow, toggleHome }) => {
+  // States reset to false, on component unmount; fix error
   const [isBought, setIsBought] = useState(false);
   const [isSold, setIsSold] = useState(false);
   const [isLent, setIsLent] = useState(false);
@@ -96,9 +97,8 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
     await transaction.wait();
 
     // Deposit the remainder of the purchase price, to the Escrow contract
-    const totalAmount = await escrow.purchasePrice(home.id) - await escrow.escrowAmount(home.id);
-    const gasLimit = await signer.estimateGas({ to: escrow.address, value: totalAmount });
-    await signer.sendTransaction({ to: escrow.address, value: totalAmount, gasLimit: gasLimit }); 
+    const totalAmount = (await escrow.purchasePrice(home.id) - await escrow.escrowAmount(home.id));
+    await signer.sendTransaction({ to: escrow.address, value: totalAmount.toString() }); 
 
     setIsLent(true);
   }
