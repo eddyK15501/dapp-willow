@@ -75,7 +75,18 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
     setIsBought(true);
   }
 
-  const handleSellProp = async () => {}
+  const handleSellProp = async () => {
+    // Approve and finalize the sale, as the seller
+    const signer = await provider.getSigner();
+
+    let transaction = await escrow.connect(signer).approveSale(home.id);
+    await transaction.wait();
+
+    transaction = await escrow.connect(signer).finalizeSale(home.id);
+    await transaction.wait();
+
+    setIsSold(true);
+  }
 
   const handleLend = async () => {
     const signer = await provider.getSigner();
