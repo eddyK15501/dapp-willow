@@ -56,6 +56,14 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
     setOwner(owner);
   };
 
+  const handleBuyProp = async () => {}
+
+  const handleSellProp = async () => {}
+
+  const handleLend = async () => {}
+
+  const handleInspection = async () => {}
+
   useEffect(() => {
     fetchDetails();
     fetchOwner();
@@ -88,15 +96,15 @@ const Home = ({ home, provider, account, escrow, toggleHome }) => {
           ) : (
             <div> 
               {account === seller ? (
-                <button className='home__buy'>Approve & Sell</button>
+                <button className='home__buy' onClick={handleSellProp}>Approve & Sell</button>
                 ) : account === lender ? (
-                  <button className='home__buy'>Approve & Lend</button>
+                  <button className='home__buy' onClick={handleLend}>Approve & Lend</button>
                   ) : account === inspector ? (
-                    <button className='home__buy'>Approve Inspection</button>
+                    <button className='home__buy' onClick={handleInspection}>Approve Inspection</button>
               ) : account === null ? (
                 <button className='home__buy disabled'>Buy Now</button>
               ) : (
-                <button className='home__buy'>Buy Now</button>
+                <button className='home__buy' onClick={handleBuyProp}>Buy Now</button>
               )}
               <button className='home__contact' style={{ marginTop: '0' }}>
                 Contact Agent
